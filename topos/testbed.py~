@@ -31,7 +31,7 @@ def myNetwork():
                    build=False)
     ######################################
     info('*** Add fake interface')
-    os.system("ifconfig lo:1 10.0.0.3/32;sleep 5")
+    CMD("ifconfig lo:1 10.0.0.3/32;sleep 5")
     ######################################
     info( '*** Adding controller\n' )
     c0=net.addController(name='c0',
@@ -43,10 +43,10 @@ def myNetwork():
     info( '*** Add switches\n')
     s1 = net.addSwitch('s1', cls=OVSKernelSwitch)
     s2 = net.addSwitch('s2', cls=OVSKernelSwitch)
-    s3 = net.addSwitch('s3', cls=OVSKernelSwitch)
+    #s3 = net.addSwitch('s3', cls=OVSKernelSwitch)
     s1.inband=True
     s2.inband=True
-    s3.inband=True
+    #s3.inband=True
     ######################################
     info( '*** Add hosts\n')
     h1 = net.addHost('h1', cls=Host, ip='10.0.0.1', defaultRoute=None)
@@ -56,11 +56,11 @@ def myNetwork():
     info( '*** Add links (H -> S)\n')
     net.addLink(s1, h1)
     net.addLink(s2, h2)
-    net.addLink(s3, h3)
+    net.addLink(s2, h3)
     ######################################
     info( '*** Add links (S -> S)\n')
     net.addLink(s1, s2)
-    net.addLink(s2, s3)
+    #net.addLink(s2, s3)
     ######################################
     info( '*** Starting network\n')
     net.build()
@@ -71,20 +71,20 @@ def myNetwork():
     info( '*** Starting switches\n')
     net.get('s1').start([c0])
     net.get('s2').start([c0])
-    net.get('s3').start([c0])
+    #net.get('s3').start([c0])
     ######################################
     info( '*** Post configure switches and hosts\n')
     CMD("ifconfig s1 10.0.0.11 up")
-    CMD("ifconfig s2 10.0.0.12 up")
-    CMD("ifconfig s3 10.0.0.13 up;sleep 5")
+    CMD("ifconfig s2 10.0.0.12 up;sleep 5")
+    #CMD("ifconfig s3 10.0.0.13 up")
     ###################
     info('*** Stop Fake interface\n')
-    os.system("ifconfig lo:1 down")
+    CMD("ifconfig lo:1 down")
     ###################
     info('*** Add routes\n')
-    #os.system("route add 10.0.0.1 dev s1")#address of h1
-    #os.system("route add 10.0.0.2 dev s2")#address of h2
-    #os.system("route add 10.0.0.3 dev s3")#address of h3
+    CMD("route add 10.0.0.1 dev s1")#address of h1
+    CMD("route add 10.0.0.2 dev s2")#address of h2
+    CMD("route add 10.0.0.3 dev s2")#address of h3
     ######################################
     print("USE FOLLOWING IN ctlr/h3\n")
     print("cd ~/ryu; PYTHONPATH=. ./bin/ryu run --observe-links ryu/app/simple_switch.py")
