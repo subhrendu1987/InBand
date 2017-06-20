@@ -92,6 +92,8 @@ def myNetwork():
     ######################################
     T.cprint("USE FOLLOWING IN ctlr/h3","red")
     T.cprint("cd ~/ryu; PYTHONPATH=. ./bin/ryu run --observe-links ryu/app/simple_switch.py","red")
+    T.cprint("or","green")
+    T.cprint("controller -v pctp:6633","red")
     CLI(net)
     net.stop()
     #return(net)
