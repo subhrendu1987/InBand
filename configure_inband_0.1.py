@@ -26,3 +26,6 @@ print("*** End of configuration")
 ####################################################
 ##  cd ~/ryu; PYTHONPATH=. ./bin/ryu run --observe-links ryu/app/simple_switch.py
 ####################################################
+##  sudo ovs-vsctl --columns=other_config list bridge | grep "disable-in-band"
+##  ovs-vsctl set bridge br other-config:disable-in-band=true
+####################################################
