@@ -30,3 +30,9 @@
 
     `sudo ifconfig lo:1 10.0.0.3/32;sleep 5; sudo mn --topo linear,3 --switch ovsk,inband=True --controller=remote,ip=10.0.0.3`
 
+## Important Commands
+1. ovs-vsctl -- --columns=name,ofport list Interface
+2.a sudo ovs-vsctl --columns=other_config list bridge | grep "disable-in-band"
+2.b ovs-vsctl set bridge br other-config:disable-in-band=true
+3. ovs-appctl bridge/dump-flows br0
+4. ovs-vsctl --no-wait set Open_vSwitch . other_config:max-idle=50000
